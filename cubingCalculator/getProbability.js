@@ -240,9 +240,9 @@ function getAdjustedRate(currentLine, previousLines, currentPool) {
     const current_rate = currentLine[2];
     const current_line = previousLines.length + 1;
 
-    console.groupCollapsed(`Line ${current_line} [${current_category}: ${current_val}]: original pool...`);
+    /*console.groupCollapsed(`Line ${current_line} [${current_category}: ${current_val}]: original pool...`);
     console.table(currentPool);
-    console.groupEnd();
+    console.groupEnd();*/
 
     // the first line will never have its rates adjusted
     if (previousLines.length === 0) {
@@ -267,7 +267,7 @@ function getAdjustedRate(currentLine, previousLines, currentPool) {
     for (const [sp_cat, count] of Object.entries(prev_special_lines_count)) {
         if ((count > MAX_CATEGORY_COUNT[sp_cat])
             || ((sp_cat === current_category) && ((count + 1) > MAX_CATEGORY_COUNT[sp_cat]))) {
-            console.log(`%cOutcome is invalid. Exceeded count for ${sp_cat}.`, "color: red");
+            // console.log(`%cOutcome is invalid. Exceeded count for ${sp_cat}.`, "color: red");
             return 0;
         } else if (count === MAX_CATEGORY_COUNT[sp_cat]) {
             to_be_removed.push(sp_cat);
@@ -281,7 +281,7 @@ function getAdjustedRate(currentLine, previousLines, currentPool) {
         if (to_be_removed.includes(cat)) {
             adjusted_total -= rate;
             adjustedFlag = true;
-            console.log(`Line ${current_line}: Removed [${cat}: ${val}] from pool. new adjusted_total for this line is: ${adjusted_total}`);
+            //console.log(`Line ${current_line}: Removed [${cat}: ${val}] from pool. new adjusted_total for this line is: ${adjusted_total}`);
         }
     }
 
@@ -307,7 +307,7 @@ function calculateRate(outcome, filteredRates) {
         chance = chance * (rate / 100);
     }
 
-    console.log("chance for this outcome to occur", chance);
+    //console.log("chance for this outcome to occur", chance);
     return chance;
 }
 
@@ -395,14 +395,14 @@ function _debuglog_rates(outcome, adjustedRates) {
         }
         log_table.push(line_data);
     }
-    console.table(log_table);
+    //console.table(log_table);
 }
 
 
 // calculates the probability of achieving the set of desired criteria specified by user input
 function getProbability(desiredTier, probabilityInput, itemType, cubeType, itemLevel) {
-    console.log(`tier=${desiredTier}, item=${itemType}, cube=${cubeType}`);
-    console.log("probability input", probabilityInput);
+    // console.log(`tier=${desiredTier}, item=${itemType}, cube=${cubeType}`);
+    // console.log("probability input", probabilityInput);
 
     // convert parts of input for easier mapping to keys in cubeRates
     const tier = tierNumberToText[desiredTier];
@@ -421,14 +421,14 @@ function getProbability(desiredTier, probabilityInput, itemType, cubeType, itemL
     // generate consolidated version of cubing data that group any lines not relevant to the calculation into a single
     // Junk entry
     const usefulCategories = getUsefulCategories(probabilityInput);
-    console.log("usefulCategories", usefulCategories);
+    // console.log("usefulCategories", usefulCategories);
     const consolidatedCubeData = {
         first_line: getConsolidatedRates(cubeData.first_line, usefulCategories),
         second_line: getConsolidatedRates(cubeData.second_line, usefulCategories),
         third_line: getConsolidatedRates(cubeData.third_line, usefulCategories),
     };
 
-    console.groupCollapsed("Cube data before and after consolidating");
+    /*console.groupCollapsed("Cube data before and after consolidating");
     for (const line of ["first_line", "second_line", "third_line"]) {
         console.groupCollapsed(line);
         console.log("Raw cube data")
@@ -439,7 +439,7 @@ function getProbability(desiredTier, probabilityInput, itemType, cubeType, itemL
         console.table(consolidatedCubeData[line]);
         console.groupEnd();
     }
-    console.groupEnd();
+    console.groupEnd();*/
 
     // loop through all possible outcomes for 1st, 2nd, and 3rd line using consolidated cube data
     // sum up the rate of outcomes that satisfied the input to determine final probability
@@ -447,7 +447,7 @@ function getProbability(desiredTier, probabilityInput, itemType, cubeType, itemL
     let total_count = 0;
     let count_useful = 0;
     let count_invalid = 0;
-    console.log(`=== Generating all possible outcomes ===`);
+    // console.log(`=== Generating all possible outcomes ===`);
     for (const line1 of consolidatedCubeData.first_line) {
         for (const line2 of consolidatedCubeData.second_line) {
             for (const line3 of consolidatedCubeData.third_line) {
@@ -455,7 +455,7 @@ function getProbability(desiredTier, probabilityInput, itemType, cubeType, itemL
                 const outcome = [line1, line2, line3];
                 if (satisfiesInput(outcome, probabilityInput)) {
                     // calculate chance of this outcome occurring
-                    console.log(`%cOutcome #${total_count + 1} matches input`, "font-weight:bold");
+                    // console.log(`%cOutcome #${total_count + 1} matches input`, "font-weight:bold");
                     const result = calculateRate(outcome, consolidatedCubeData);
                     total_chance += result;
 
@@ -469,8 +469,8 @@ function getProbability(desiredTier, probabilityInput, itemType, cubeType, itemL
             }
         }
     }
-    console.log(`=== RESULTS ===`);
-    console.log("Total chance: " + `%c${_roundNPlaces(total_chance, 4)}%%%c (without rounding: ${total_chance})`,
+    // console.log(`=== RESULTS ===`);
+    /*console.log("Total chance: " + `%c${_roundNPlaces(total_chance, 4)}%%%c (without rounding: ${total_chance})`,
         "color: black; font-weight: bold; background-color: yellow;", "");
 
     console.groupCollapsed("Results table");
@@ -478,6 +478,6 @@ function getProbability(desiredTier, probabilityInput, itemType, cubeType, itemL
         "Total chance": `${_roundNPlaces(total_chance, 4)}%`, "Total chance (no rounding)": total_chance,
         "valid matching outcomes:": count_useful, "invalid outcomes:": count_invalid, "outcomes checked:": total_count
     });
-    console.groupEnd();
+    console.groupEnd();*/
     return total_chance / 100;
 }

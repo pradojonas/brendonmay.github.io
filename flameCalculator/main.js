@@ -1145,6 +1145,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 var desired_stat = { "attack_tier": attack_tier, "dmg_percent": dmg_percent }
             }
 
+            // getProbability('140-159', 'powerful', 'armor', '20', true, 'other');
             var p = getProbability(item_level, flame_type, item_type, desired_stat, non_advantaged_item, maple_class)
             //console.log(p)
             var stats = geoDistrQuantile(p)
@@ -1223,5 +1224,5 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(loaderOff, 100);
     })
 })
-//var p = getProbability("200-219", "powerful", "weapon", {"attack_tier": 6, "desired_stat": 40, "dmg_percent": 12})
+//var p = getProbability("200-229", "powerful", "weapon", {"attack_tier": 6, "desired_stat": 40, "dmg_percent": 12})
 

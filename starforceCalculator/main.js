@@ -434,6 +434,7 @@ function do_stuff() {
     let server = document.getElementById('server').value;
 
     const rates = getRates(server, item_type, useAEE);
+    // getRates('kms', 'normal', false)
 
     var silver = false;
     var gold = false;
@@ -452,9 +453,14 @@ function do_stuff() {
     if (mvp == "diamond") {
         diamond = true;
     }
-		
     var result = repeatExperiment(total_trials, current_star, desired_star, rates, item_level, boom_protect, thirty_off, star_catch, five_ten_fifteen, sauna, silver, gold, diamond, item_type, two_plus, useAEE, server);
-    //result = [average_cost, average_booms, meso_result_list, boom_result_list, median_cost, median_booms, max_cost, min_cost, max_booms, min_booms, meso_std, boom_std, meso_result_list_divided]
+    // result = [average_cost, average_booms, meso_result_list, boom_result_list, median_cost, median_booms, max_cost, min_cost, max_booms, min_booms, meso_std, boom_std, meso_result_list_divided]
+
+    // 12-17 Average cost to lvl 150 equip on Savior (No-Safeguard, No-30% off, Starcatch,  5/10/15)
+    /*repeatExperiment('10000', 12, 17, getRates('kms', 'normal', false),
+                 150, true, false, false, true,
+                 false, false, false, false, 'normal', false, false, 'kms')[0]/1000000000*/
+    
     var average_mesos = result[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     var average_booms = result[1];
 

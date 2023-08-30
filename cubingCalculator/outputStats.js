@@ -61,4 +61,5 @@ function outputStatsToUi(stats, tier_up, cubeType, itemLevel) {
       </div>
     </div>
         `
+  return [averageCost, seventy_fifth_cost];
 }
