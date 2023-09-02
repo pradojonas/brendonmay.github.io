@@ -16,19 +16,41 @@ const TIER_PROBABILITIES = {
 var stat_per_tier = {
     "120-139": 7,
     "140-159": 8,
+    "140-149": 8,
+    "150-159": 8,
     "160-179": 9,
+    "160-169": 9,
+    "170-179": 9,
     "180-199": 10,
+    "180-189": 10,
+    "190-199": 10,
     "200-229": 11,
+    "200-209": 11,
+    "210-219": 11,
+    "220-229": 11,
     "230-249": 12,
+    "230-239": 12,
+    "240-249": 12,
     "250+": 12,
 }
 let combo_stat_per_tier = {
     "120-139": 4,
     "140-159": 4,
+    "140-149": 4,
+    "150-159": 4,
     "160-179": 5,
+    "160-169": 5,
+    "170-179": 5,
     "180-199": 5,
+    "180-189": 5,
+    "190-199": 5,
     "200-229": 6,
+    "200-209": 6,
+    "210-219": 6,
+    "220-229": 6,
     "230-249": 6,
+    "230-239": 6,
+    "240-249": 6,
     "250+": 7,
 }
 var stat_equivalences = { "all_stat": 8, "secondary_stat": 0.1, "attack": 3 }
@@ -405,6 +427,13 @@ function getUpperTierLimit(flame_type, non_advantaged_item) {
 }
 
 function getProbability(item_level, flame_type, item_type, desired_stat, non_advantaged_item, maple_class) {
+    if (maple_class == "kanna") {
+        stat_equivalences.luk_stat = stat_equivalences.secondary_stat;
+    }
+    if (maple_class == "db" || maple_class == "shadower" || maple_class == "cadena") {
+        stat_equivalences.dex_stat = stat_equivalences.secondary_stat;
+        stat_equivalences.str_stat = stat_equivalences.secondary_stat;
+    }
     //desired_stat = {attack_tier, dmg_percent}
 
     //main_tier
@@ -473,7 +502,6 @@ function getProbability(item_level, flame_type, item_type, desired_stat, non_adv
                                                     var stat_score = main_tier * stat_per_tier[item_level_adjusted] + secondary_tier * stat_per_tier[item_level_adjusted] * stat_equivalences.luk_stat + combo_one_tier * (combo_stat_per_tier[item_level_adjusted] * stat_equivalences.luk_stat + combo_stat_per_tier[item_level_adjusted]) + combo_two_tier * combo_stat_per_tier[item_level_adjusted] + combo_three_tier * combo_stat_per_tier[item_level_adjusted] + all_stat_tier * stat_equivalences["all_stat"] + attack_tier * stat_equivalences["attack"] + combo_four_tier * combo_stat_per_tier[item_level_adjusted] * stat_equivalences.luk_stat + combo_five_tier * combo_stat_per_tier[item_level_adjusted] * stat_equivalences.luk_stat + hp_tier * hp_stat_per_tier[item_level] * stat_equivalences.hp_stat
                                                     if (stat_score >= desired_stat) {
                                                         if (possibleOutcome(main_tier, secondary_tier, combo_one_tier, combo_two_tier, combo_three_tier, combo_four_tier, combo_five_tier, all_stat_tier, attack_tier, 0, 0, 0, hp_tier)) {
-                                                            console.log("valid score")
                                                             var solution = { "main_tier": main_tier, "secondary_tier": secondary_tier, "combo_one_tier": combo_one_tier, "combo_two_tier": combo_two_tier, "combo_three_tier": combo_three_tier, "combo_four_tier": combo_four_tier, "combo_five_tier": combo_five_tier, "all_stat_tier": all_stat_tier, "attack_tier": attack_tier, "hp_tier": hp_tier }
                                                             solutions[solutions.length] = solution
                                                         }
